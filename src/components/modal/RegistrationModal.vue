@@ -1,15 +1,13 @@
 <template>
-  <q-dialog v-model="icon" >
-    <q-card class="registration">
+  <q-dialog ref="dialog" @hide="onDialogHide">
+    <q-card class="q-dialog-plugin add__user q-pt-sm q-pb-md modal-info__user">
       <q-card-section class="row items-center q-pb-none">
         <q-space/>
-        <q-btn v-close-popup dense flat icon="close" round/>
+        <q-btn v-close-popup dense flat icon="close" @click="onDialogHide"/>
       </q-card-section>
-
-      <q-card-section class="row items-center q-pb-none flex-center">
-        <div class="text-h5 q-mb-none">Регистрация</div>
+      <q-card-section class="row items-center flex-center q-pb-lg">
+        <div class="text-h5 q-mb-none text-grey">Регистрация</div>
       </q-card-section>
-
       <q-card-section>
         <q-form class="q-px-sm q-pt-sm">
           <q-input
@@ -21,6 +19,7 @@
             lazy-rules
             outlined
             type="email"
+            class="q-pb-lg"
           >
           </q-input>
           <q-input
@@ -32,6 +31,7 @@
             lazy-rules
             outlined
             type="username"
+            class="q-pb-lg"
           >
           </q-input>
           <q-input
@@ -43,6 +43,7 @@
             label="Пароль"
             lazy-rules
             outlined
+            class="q-pb-lg"
           >
             <template v-slot:append>
               <switch-visibility
@@ -60,6 +61,7 @@
             label="Повторить пароль"
             lazy-rules
             outlined
+            class="q-pb-lg"
           >
             <template v-slot:append>
               <switch-visibility
@@ -73,14 +75,12 @@
       <q-card-actions class="q-px-lg q-pb-xl flex-center">
         <q-btn
           :label="btnLabelReg"
-          class="text-white text-capitalize bg-blue"
-          @click="submit"
+          class="text-white bg-blue my-button"
+          @click="onOKClick"
         />
       </q-card-actions>
     </q-card>
   </q-dialog>
-
-  <q-btn :label="btnLabelReg" flat class="text-grey-6 text-capitalize" @click="icon = true"/>
 </template>
 
 
@@ -91,7 +91,7 @@ import requiredMixin from 'src/mixins/requiredMixin';
 import shortMixin from 'src/mixins/shortMixin';
 import diffPasswordMixin from 'src/mixins/diffPasswordMixin';
 import validationEmailMixin from 'src/mixins/validationEmailMixin';
-import SwitchVisibility from 'components/switchVisibility.vue';
+import SwitchVisibility from 'components/SwitchVisibility.vue';
 
 const $q = useQuasar()
 
@@ -108,7 +108,6 @@ export default {
       username: '',
       password: '',
       repassword: '',
-      icon: false,
       passwordVisibility: {
         isVisibility: false,
         visibilityIcon: nameVisibilityIcon,
@@ -122,7 +121,17 @@ export default {
     },
   },
   methods: {
-    submit() {
+    hide () {
+      this.$refs.dialog.hide()
+    },
+    onDialogHide () {
+      this.email = ''
+      this.username = ''
+      this.password = ''
+      this.repassword = ''
+      this.$emit(Emit.HIDE)
+    },
+    onOKClick () {
       this.$refs.email.validate()
       this.$refs.username.validate()
       this.$refs.password.validate()
@@ -136,6 +145,8 @@ export default {
         })
         localStorage.setItem(nameToken, String(this.randomNumber))
         this.$router.push({ name: 'HomeAuth' })
+
+        this.$emit(Emit.OK)
       }
     },
     setVisibility(value) {
@@ -145,20 +156,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.registration {
-  width: 100%;
-  .q-card__section {
-    h4 {
-      color: #545E79;
-    }
-  }
-  .q-card__actions {
-    button {
-      border-radius: 6px;
-      min-width: 185px;
-      min-height: 40px;
-    }
-  }
-}
+<style scoped>
+
 </style>

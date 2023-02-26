@@ -12,7 +12,7 @@
     </q-toolbar>
   </q-header>
 
-  <add-user
+  <add-user-modal
     v-model="isShowModal"
   />
 
@@ -20,11 +20,11 @@
 
 <script>
 import { nameToken } from 'src/utils/constants';
-import AddUser from "components/modal/AddUser.vue";
+import AddUserModal from "components/modal/AddUserModal.vue";
 
 export default {
   name: "Header",
-  components: { AddUser },
+  components: { AddUserModal },
   data() {
     return {
       search: '',

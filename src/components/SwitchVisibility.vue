@@ -7,7 +7,7 @@
 import { Emit, nameVisibilityIcon, nameNotVisibilityIcon, passwordType, textType } from 'src/utils/constants'
 
 export default {
-  name: "switchVisibility",
+  name: "SwitchVisibility",
   props: {
     passwordVisibility: {
       type: Object,

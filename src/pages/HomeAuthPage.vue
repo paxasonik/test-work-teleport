@@ -70,15 +70,15 @@
     </div>
   </q-page>
 
-  <info-user
+  <info-user-modal
     v-model="isShowModal"
     :infoUser="infoUser"
   >
-  </info-user>
+  </info-user-modal>
 </template>
 
 <script>
-import InfoUser from 'components/modal/InfoUser.vue';
+import InfoUserModal from 'components/modal/InfoUserModal.vue';
 import statusNameMixin from 'src/mixins/statusNameMixin';
 import { Getters, Mutations, columns, pagination, options } from 'src/utils/constants';
 import { mapGetters } from 'vuex'
@@ -86,7 +86,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: "HomeAuthPage",
   mixins: [ statusNameMixin ],
-  components: {InfoUser},
+  components: { InfoUserModal },
   data() {
     return {
       columns,

@@ -3,7 +3,7 @@
     <q-card class="q-dialog-plugin add__user q-pt-sm q-pb-md">
       <q-card-section class="row items-center q-pb-none">
         <q-space/>
-        <q-btn v-close-popup dense flat icon="close" @click="onCancelClick"/>
+        <q-btn v-close-popup dense flat icon="close" @click="onDialogHide"/>
       </q-card-section>
       <q-card-section class="row items-center q-pb-none flex-center">
         <div class="text-h5 q-mb-none">Добавить пользователя</div>
@@ -30,11 +30,12 @@
             outlined
             type="text"
             class="q-pb-lg"
+            mask="phone"
           >
           </q-input>
           <q-input
             ref="balance"
-            v-model.number="balance"
+            v-model="balance"
             clearable
             label="Баланс"
             outlined
@@ -55,10 +56,10 @@
 <script>
 import requiredMixin from 'src/mixins/requiredMixin';
 import { Emit, Getters, Mutations } from 'src/utils/constants';
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "AddUser",
+  name: "AddUserModal",
   mixins: [ requiredMixin ],
   data() {
     return {
@@ -77,12 +78,15 @@ export default {
       this.$refs.dialog.hide()
     },
     onDialogHide () {
+      this.phone = ''
+      this.fullName = ''
+      this.balance = ''
       this.$emit(Emit.HIDE)
     },
     onOKClick () {
       const { getIncrementId, phone, fullName, balance } = this
 
-      if (this.$refs.fullName.validate()) {
+      if (!this.$refs.fullName.hasError) {
         this.$store.commit( Mutations.addUser, { id: getIncrementId, phone, fullName, balance, status: true } )
 
         this.phone = ''
@@ -92,12 +96,6 @@ export default {
         this.$emit(Emit.OK)
         this.hide()
       }
-    },
-    onCancelClick () {
-      this.phone = ''
-      this.fullName = ''
-      this.balance = ''
-      this.hide()
     },
   },
 }

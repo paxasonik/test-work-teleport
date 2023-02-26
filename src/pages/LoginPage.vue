@@ -1,12 +1,10 @@
 <template>
-  <q-page
-    class="window-height window-width row justify-center items-center login"
-  >
+  <q-page class="window-height window-width row justify-center items-center login">
     <div class="column q-pa-lg">
       <div class="row">
         <q-card class="shadow-0">
           <q-card-section>
-            <h4 class="text-h5 q-mb-none q-mt-xl text-center">Авторизация</h4>
+            <h4 class="text-h5 q-mb-none q-mt-xl text-center text-grey">Авторизация</h4>
           </q-card-section>
           <q-card-section>
             <q-form class="q-px-sm q-pt-sm">
@@ -19,6 +17,7 @@
                 outlined
                 label="Логин"
                 lazy-rules
+                class="q-pb-lg"
               >
               </q-input>
               <q-input
@@ -30,6 +29,7 @@
                 outlined
                 label="Пароль"
                 lazy-rules
+                class="q-pb-lg"
               >
                 <template v-slot:append>
                   <switch-visibility
@@ -44,12 +44,14 @@
           <q-card-actions class="q-px-lg flex-center">
             <q-btn
               :label="btnLabelExit"
-              class="text-white text-capitalize bg-blue"
+              class="text-white bg-blue shadow-0 my-button"
               @click="submit"/>
           </q-card-actions>
-          <q-card-section
-            class="text-center q-pa-sm q-mb-xl">
-            <registration-modal/>
+          <q-card-section class="text-center q-pa-sm q-mb-xl">
+            <q-btn :label="btnLabelReg" flat class="text-grey-6 text-capitalize" @click="registration"/>
+            <registration-modal
+              v-model="isShowModal"
+            />
           </q-card-section>
         </q-card>
       </div>
@@ -60,12 +62,12 @@
 <script>
 import { useQuasar } from 'quasar'
 import { Emit, btnLabelReg, btnLabelExit, nameVisibilityIcon, passwordType, nameToken, notifyIcon, notifyColor, notifyMessage } from 'src/utils/constants'
-import RegistrationModal from "components/modal/RegistrationModal.vue";
-import requiredMixin from "src/mixins/requiredMixin";
-import shortMixin from "src/mixins/shortMixin";
-import correctPasswordMixin from "src/mixins/correctPasswordMixin";
-import correctLoginMixin from "src/mixins/correctLoginMixin";
-import SwitchVisibility from "components/switchVisibility.vue";
+import RegistrationModal from 'components/modal/RegistrationModal.vue';
+import requiredMixin from 'src/mixins/requiredMixin';
+import shortMixin from 'src/mixins/shortMixin';
+import correctPasswordMixin from 'src/mixins/correctPasswordMixin';
+import correctLoginMixin from 'src/mixins/correctLoginMixin';
+import SwitchVisibility from 'components/SwitchVisibility.vue';
 
 const $q = useQuasar()
 
@@ -77,14 +79,15 @@ export default {
     return {
       $q,
       Emit,
-      login: '',
-      password: '',
       btnLabelReg,
       btnLabelExit,
+      login: '',
+      password: '',
+      isShowModal: false,
       passwordVisibility: {
-        isVisibility: false,
         visibilityIcon: nameVisibilityIcon,
         passwordFieldType: passwordType,
+        isVisibility: false,
       },
     }
   },
@@ -111,6 +114,9 @@ export default {
     setVisibility(value) {
       this.passwordVisibility = value
     },
+    registration() {
+      this.isShowModal = !this.isShowModal
+    }
   }
 }
 </script>
@@ -118,21 +124,15 @@ export default {
 <style scoped lang="scss">
 .login {
   .q-card {
-    width:500px;
-    min-height:330px;
+    width: 500px;
+    min-height: 330px;
     border-radius: 16px;
     filter: drop-shadow(0px 8px 12px rgba(85, 132, 255, 0.35));
   }
-  .q-card__section {
-    h4 {
-      color: #545E79;
-    }
-  }
   .q-card__actions {
     button {
-      border-radius: 6px;
       min-width: 185px;
-      min-height: 40px;
+      filter: drop-shadow(0px 8px 12px rgba(85, 132, 255, 0.35));
     }
   }
 }

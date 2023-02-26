@@ -24,7 +24,7 @@ import statusNameMixin from 'src/mixins/statusNameMixin';
 import { Emit } from 'src/utils/constants';
 
 export default {
-  name: "InfoUser",
+  name: "InfoUserModal",
   mixins: [ statusNameMixin ],
   props: {
     infoUser: {
